@@ -90,7 +90,7 @@ namespace ApiSample
             }
             listBox1.DataSource = lista;
             listBox1.DisplayMember= "Name";
-            //listBox1.ValueMember= "Name";
+
             textBox1.Text = "körte";
 
 
