@@ -33,6 +33,7 @@ namespace ApiSample
             var proxy = new Api(url, key);
 
             userek_listaz();
+            orderek_listaz();
            
             //var snaps = proxy.CategoriesFindAll();
             //if (snaps.Content != null)
@@ -67,9 +68,34 @@ namespace ApiSample
             listBoxUser.DataSource = lista.ToList();
         }
 
+        void orderek_listaz()
+        {
+            List<string> lista = new List<string>();
+            var proxy = new Api(url, key);
+            var kiv = listBoxUser.SelectedValue;
+
+            var rendelesek = proxy.OrdersFindAll();
+            for (var i = 0; i < rendelesek.Content.Count; i++)
+            {
+                var elem = rendelesek.Content[i];
+                if (elem.UserEmail == kiv.ToString())
+                {
+                    lista.Add(elem.LastUpdatedUtc.ToString("yyyy-MM-dd HH:mm:ss"));
+                }
+            }
+            listBoxOrder.DataSource = lista.ToList();
+            
+        }
+
+
         private void textBoxUser_TextChanged(object sender, EventArgs e)
         {
             userek_listaz();
+        }
+
+        private void listBoxUser_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            orderek_listaz();
         }
     }
 }

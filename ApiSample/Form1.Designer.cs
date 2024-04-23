@@ -30,6 +30,7 @@
         {
             this.textBoxUser = new System.Windows.Forms.TextBox();
             this.listBoxUser = new System.Windows.Forms.ListBox();
+            this.listBoxOrder = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
             // textBoxUser
@@ -48,12 +49,23 @@
             this.listBoxUser.Name = "listBoxUser";
             this.listBoxUser.Size = new System.Drawing.Size(282, 324);
             this.listBoxUser.TabIndex = 1;
+            this.listBoxUser.SelectedIndexChanged += new System.EventHandler(this.listBoxUser_SelectedIndexChanged);
+            // 
+            // listBoxOrder
+            // 
+            this.listBoxOrder.FormattingEnabled = true;
+            this.listBoxOrder.ItemHeight = 16;
+            this.listBoxOrder.Location = new System.Drawing.Point(316, 44);
+            this.listBoxOrder.Name = "listBoxOrder";
+            this.listBoxOrder.Size = new System.Drawing.Size(247, 372);
+            this.listBoxOrder.TabIndex = 2;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1030, 466);
+            this.Controls.Add(this.listBoxOrder);
             this.Controls.Add(this.listBoxUser);
             this.Controls.Add(this.textBoxUser);
             this.Name = "Form1";
@@ -68,5 +80,6 @@
 
         private System.Windows.Forms.TextBox textBoxUser;
         private System.Windows.Forms.ListBox listBoxUser;
+        private System.Windows.Forms.ListBox listBoxOrder;
     }
 }
