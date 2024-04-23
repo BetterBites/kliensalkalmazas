@@ -13,47 +13,58 @@ using System.Text;
 using System.Windows.Forms;
 using Hotcakes.CommerceDTO.v1.Client;
 using System.Collections;
+using System.Security.Policy;
 
 namespace ApiSample
 {
     public partial class Form1 : Form
     {
+
         public Form1()
         {
             InitializeComponent();
-           
         }
 
+        public string url = "http://20.234.113.211:8091/";
+        public string key = "1-82c87d0f-f071-4466-852d-d683fc490e94";
 
         private void Form1_Load_1(object sender, EventArgs e)
         {
-            List<string> lista = new List<string>();
-
-            var url = "http://20.234.113.211:8091/";
-            var key = "1-82c87d0f-f071-4466-852d-d683fc490e94";
-
             var proxy = new Api(url, key);
-
+            userek_listaz();
+           
             var snaps = proxy.CategoriesFindAll();
             if (snaps.Content != null)
             {
-                for (var i = 0; i < 5; i++)
+                for (var i = 0; i < snaps.Content.Count; i++)
                 {
-                    if (i < snaps.Content.Count)
-                    {
-
-                        lista.Add(snaps.Content[i].Name);
-                        var cat = proxy.CategoriesFind(snaps.Content[i].Bvin);
-                        var catSlug = proxy.CategoriesFindBySlug(snaps.Content[i].RewriteUrl);
-                    }
+                    
+                    //lista.Add(rendelesek.Content[i].UserEmail);
+                    var cat = proxy.CategoriesFind(snaps.Content[i].Bvin);
+                    var catSlug = proxy.CategoriesFindBySlug(snaps.Content[i].RewriteUrl);
                 }
             }
-            listBox1.DataSource = lista;
-            listBox1.DisplayMember= "Name";
 
-            textBox1.Text = "körte";
+        }
 
+        void userek_listaz()
+        {
+            List<string> lista = new List<string>();
+            var proxy = new Api(url, key);
 
+            var rendelesek = proxy.OrdersFindAll();
+
+            for (var i = 0; i < rendelesek.Content.Count; i++)
+            {
+                var elem = rendelesek.Content[i].UserEmail;
+                if (!lista.Contains(elem) && elem != "")
+                {
+                    lista.Add(elem);
+                }
+               
+            }
+
+            listBoxUser.DataSource = lista.ToList();
         }
     }
 }
