@@ -38,7 +38,15 @@ namespace ApiSample
             userek_listaz();
             orderek_listaz();
             osszes_order();
-          
+
+            //design
+            this.BackColor = Color.FromArgb(130, 191, 145);
+            label1.ForeColor = Color.FromArgb(92, 50, 99);
+            label2.ForeColor = Color.FromArgb(92, 50, 99);
+            label3.ForeColor = Color.FromArgb(92, 50, 99);
+            buttonAtvetel.BackColor = Color.FromArgb(92, 50, 99);
+            dgwOrder.ColumnHeadersDefaultCellStyle.SelectionBackColor = Color.FromArgb(92, 50, 99);
+            dgwOrder.ColumnHeadersDefaultCellStyle.SelectionBackColor = Color.FromArgb(92, 50, 99);
         }
 
         void userek_listaz()
