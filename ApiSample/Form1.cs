@@ -31,19 +31,20 @@ namespace ApiSample
         private void Form1_Load_1(object sender, EventArgs e)
         {
             var proxy = new Api(url, key);
+
             userek_listaz();
            
-            var snaps = proxy.CategoriesFindAll();
-            if (snaps.Content != null)
-            {
-                for (var i = 0; i < snaps.Content.Count; i++)
-                {
+            //var snaps = proxy.CategoriesFindAll();
+            //if (snaps.Content != null)
+            //{
+            //    for (var i = 0; i < snaps.Content.Count; i++)
+            //    {
                     
-                    //lista.Add(rendelesek.Content[i].UserEmail);
-                    var cat = proxy.CategoriesFind(snaps.Content[i].Bvin);
-                    var catSlug = proxy.CategoriesFindBySlug(snaps.Content[i].RewriteUrl);
-                }
-            }
+            //        //lista.Add(rendelesek.Content[i].UserEmail);
+            //        var cat = proxy.CategoriesFind(snaps.Content[i].Bvin);
+            //        var catSlug = proxy.CategoriesFindBySlug(snaps.Content[i].RewriteUrl);
+            //    }
+            //}
 
         }
 
@@ -57,14 +58,18 @@ namespace ApiSample
             for (var i = 0; i < rendelesek.Content.Count; i++)
             {
                 var elem = rendelesek.Content[i].UserEmail;
-                if (!lista.Contains(elem) && elem != "")
+                if (!lista.Contains(elem) && elem != "" && elem.Contains(textBoxUser.Text))
                 {
                     lista.Add(elem);
                 }
-               
             }
 
             listBoxUser.DataSource = lista.ToList();
+        }
+
+        private void textBoxUser_TextChanged(object sender, EventArgs e)
+        {
+            userek_listaz();
         }
     }
 }
