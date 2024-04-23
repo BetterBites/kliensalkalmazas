@@ -58,6 +58,8 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="rendeles.cs" />
+    <Compile Include="rendeles2.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ApiSample.htm" />

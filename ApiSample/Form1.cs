@@ -27,6 +27,7 @@ namespace ApiSample
 
         public string url = "http://20.234.113.211:8091/";
         public string key = "1-82c87d0f-f071-4466-852d-d683fc490e94";
+        public string kivalasztott_order_bvin = "";
 
         private void Form1_Load_1(object sender, EventArgs e)
         {
@@ -35,19 +36,7 @@ namespace ApiSample
             userek_listaz();
             orderek_listaz();
             osszes_order();
-           
-            //var snaps = proxy.CategoriesFindAll();
-            //if (snaps.Content != null)
-            //{
-            //    for (var i = 0; i < snaps.Content.Count; i++)
-            //    {
-                    
-            //        //lista.Add(rendelesek.Content[i].UserEmail);
-            //        var cat = proxy.CategoriesFind(snaps.Content[i].Bvin);
-            //        var catSlug = proxy.CategoriesFindBySlug(snaps.Content[i].RewriteUrl);
-            //    }
-            //}
-
+          
         }
 
         void userek_listaz()
@@ -70,9 +59,10 @@ namespace ApiSample
 
         void orderek_listaz()
         {
-            List<string> lista = new List<string>();
+            List<rendeles> lista = new List<rendeles>();
             var proxy = new Api(url, key);
             var kiv = listBoxUser.SelectedValue;
+
 
             var rendelesek = proxy.OrdersFindAll();
             for (var i = 0; i < rendelesek.Content.Count; i++)
@@ -80,41 +70,47 @@ namespace ApiSample
                 var elem = rendelesek.Content[i];
                 if (elem.UserEmail == kiv.ToString())
                 {
-                    lista.Add(elem.TimeOfOrderUtc.ToString("yyyy-MM-dd HH:mm:ss"));
+                    rendeles r = new rendeles();
+                    r.bvin = elem.bvin;
+                    r.vevo = elem.UserEmail;
+                    r.rendelesi_ido = elem.TimeOfOrderUtc.ToString("yyyy-MM-dd HH:mm:ss");
+                    r.osszeg = elem.TotalGrand;
+                    r.statusz = elem.StatusName.ToString();
+
+                    lista.Add(r);
                 }
             }
             listBoxOrder.DataSource = lista.ToList();
-            
-
-            //var lekerdezett = rendelesek.Content
-            //    .Where(elem => elem.UserEmail == kiv.ToString())
-            //    .Select(elem => new { TimeOfOrderString = elem.TimeOfOrderUtc.ToString("yyyy-MM-dd HH:mm:ss"), ContentObj = elem })
-            //    .ToList();
-
-            //listBoxOrder.DataSource = lekerdezett;
-            //listBoxOrder.DisplayMember = "TimeOfOrderString";
-
+            //listBoxOrder.DisplayMember = "vevo";
         }
 
         void osszes_order()
         {
-            //var kiv = (listBoxOrder.SelectedItem as dynamic)?.ContentObj;
+            string kiv_bvin = ((rendeles)listBoxOrder.SelectedItem).bvin;
+            Console.WriteLine(kiv_bvin);
 
+            List<rendeles2> lista = new List<rendeles2>();
             var proxy = new Api(url, key);
             var rendelesek = proxy.OrdersFindAll();
 
 
-            //for (var i = 0; i < rendelesek.Content.Count; i++)
-            //{
-            //    var elem = rendelesek.Content[i];
-            //    if (elem == kiv)
-            //    {
-            //        lista.Add(elem.UserEmail);
-            //        //lista.Add(elem);
-            //    }
-            //}
+            for (var i = 0; i < rendelesek.Content.Count; i++)
+            {
+                var elem = rendelesek.Content[i];
+                if (elem.bvin.ToString() == kiv_bvin)
+                {
+                    rendeles2 r = new rendeles2();
 
-            dgwOrder.DataSource= rendelesek.Content;
+                    r.bvin = elem.bvin.ToString();
+                    r.vevo = elem.UserEmail.ToString();
+                    r.rendelesi_ido = elem.TimeOfOrderUtc.ToString("yyyy-MM-dd HH:mm:ss");
+                    r.osszeg = (decimal)elem.TotalGrand;
+                    r.statusz = elem.StatusName.ToString();
+
+                    lista.Add(r);
+                }
+            }
+            dgwOrder.DataSource = lista.ToList();
         }
 
 
@@ -126,6 +122,17 @@ namespace ApiSample
         private void listBoxUser_SelectedIndexChanged(object sender, EventArgs e)
         {
             orderek_listaz();
+            osszes_order();
+        }
+
+        private void buttonAtvetel_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void listBoxOrder_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            osszes_order();
         }
     }
 }
