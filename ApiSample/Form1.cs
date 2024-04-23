@@ -14,6 +14,8 @@ using System.Windows.Forms;
 using Hotcakes.CommerceDTO.v1.Client;
 using System.Collections;
 using System.Security.Policy;
+using Hotcakes.CommerceDTO.v1.Orders;
+using Hotcakes.CommerceDTO.v1;
 
 namespace ApiSample
 {
@@ -86,13 +88,12 @@ namespace ApiSample
         void osszes_order()
         {
             string kiv_bvin = ((rendeles)listBoxOrder.SelectedItem).bvin;
-            Console.WriteLine(kiv_bvin);
-
+            
             List<rendeles2> lista = new List<rendeles2>();
             var proxy = new Api(url, key);
             var rendelesek = proxy.OrdersFindAll();
 
-
+            
             for (var i = 0; i < rendelesek.Content.Count; i++)
             {
                 var elem = rendelesek.Content[i];
@@ -109,7 +110,11 @@ namespace ApiSample
                     lista.Add(r);
                 }
             }
+
             dgwOrder.DataSource = lista.ToList();
+
+            
+            //dgwOrder.DataSource = rendelesek.Content.ToList();
         }
 
 
@@ -126,7 +131,20 @@ namespace ApiSample
 
         private void buttonAtvetel_Click(object sender, EventArgs e)
         {
+            string kiv_bvin = ((rendeles)listBoxOrder.SelectedItem).bvin;
+            var proxy = new Api(url, key);
+
+            var rendeles = proxy.OrdersFind(kiv_bvin).Content;
+
             
+            rendeles.IsPlaced= true;
+            rendeles.StatusName = "Complete";
+            rendeles.StatusCode = "09D7305D-BD95-48d2-A025-16ADC827582A";
+
+
+            // call the API to update the order
+            ApiResponse<OrderDTO> response = proxy.OrdersUpdate(rendeles);
+            osszes_order();
         }
 
         private void listBoxOrder_SelectedIndexChanged(object sender, EventArgs e)
