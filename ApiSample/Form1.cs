@@ -81,7 +81,6 @@ namespace ApiSample
                 }
             }
             listBoxOrder.DataSource = lista.ToList();
-            //listBoxOrder.DisplayMember = "vevo";
         }
 
         void osszes_order()
