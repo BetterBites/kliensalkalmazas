@@ -34,6 +34,7 @@ namespace ApiSample
 
             userek_listaz();
             orderek_listaz();
+            osszes_order();
            
             //var snaps = proxy.CategoriesFindAll();
             //if (snaps.Content != null)
@@ -64,7 +65,6 @@ namespace ApiSample
                     lista.Add(elem);
                 }
             }
-
             listBoxUser.DataSource = lista.ToList();
         }
 
@@ -80,11 +80,41 @@ namespace ApiSample
                 var elem = rendelesek.Content[i];
                 if (elem.UserEmail == kiv.ToString())
                 {
-                    lista.Add(elem.LastUpdatedUtc.ToString("yyyy-MM-dd HH:mm:ss"));
+                    lista.Add(elem.TimeOfOrderUtc.ToString("yyyy-MM-dd HH:mm:ss"));
                 }
             }
             listBoxOrder.DataSource = lista.ToList();
             
+
+            //var lekerdezett = rendelesek.Content
+            //    .Where(elem => elem.UserEmail == kiv.ToString())
+            //    .Select(elem => new { TimeOfOrderString = elem.TimeOfOrderUtc.ToString("yyyy-MM-dd HH:mm:ss"), ContentObj = elem })
+            //    .ToList();
+
+            //listBoxOrder.DataSource = lekerdezett;
+            //listBoxOrder.DisplayMember = "TimeOfOrderString";
+
+        }
+
+        void osszes_order()
+        {
+            //var kiv = (listBoxOrder.SelectedItem as dynamic)?.ContentObj;
+
+            var proxy = new Api(url, key);
+            var rendelesek = proxy.OrdersFindAll();
+
+
+            //for (var i = 0; i < rendelesek.Content.Count; i++)
+            //{
+            //    var elem = rendelesek.Content[i];
+            //    if (elem == kiv)
+            //    {
+            //        lista.Add(elem.UserEmail);
+            //        //lista.Add(elem);
+            //    }
+            //}
+
+            dgwOrder.DataSource= rendelesek.Content;
         }
 
 
